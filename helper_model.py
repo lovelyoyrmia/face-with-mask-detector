@@ -41,10 +41,10 @@ def prediction_mask(frame):
     font_scale = 1
 
     if (predictions > 0):
-        status = 'No Mask !'
+        status = 'No Mask!'
 
-        cv2.rectangle(frame, (x, y), (x+w-50, y-40), (255, 255, 255), -1)
-        cv2.rectangle(frame, (x, y), (x+w-50, y-40), (0, 0, 255), 2)
+        cv2.rectangle(frame, (x, y), (x+w-30, y-40), (255, 255, 255), -1)
+        cv2.rectangle(frame, (x, y), (x+w-30, y-40), (0, 0, 255), 2)
         cv2.putText(frame, status, (x+8, y-8), font,
                     font_scale, (0, 0, 255), 2, cv2.LINE_4)
         cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 0, 255), 2)
@@ -57,10 +57,17 @@ def prediction_mask(frame):
                     font_scale, (0, 255, 0), 2, cv2.LINE_4)
         cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
 
+    return predictions
 
-frame = cv2.imread('2.jpg')
 
-prediction_mask(frame)
+frame = cv2.imread('vio.jpg')
+
+predictions = prediction_mask(frame)
+
+if predictions > 0:
+    print('No mask')
+else:
+    print('Mask')
 
 cv2.imshow('', frame)
 
