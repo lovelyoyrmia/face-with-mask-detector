@@ -26,17 +26,14 @@ def detector(frame):
             for (ex, ey, ew, eh) in faces2:
                 face_roi = roi_color[ey: ey+eh, ex:ex+ew]
 
+                print(face_roi)
+
     final_image = cv2.resize(face_roi, (224, 224))
     final_image = np.expand_dims(final_image, axis=0)
     final_image = final_image/255
 
     predictions = model.predict(final_image)
 
-    return predictions, x, y, w, h
-
-
-def prediction_mask(frame):
-    predictions, x, y, w, h = detector(frame)
     font = cv2.FONT_HERSHEY_COMPLEX
     font_scale = 1
 
@@ -57,18 +54,16 @@ def prediction_mask(frame):
                     font_scale, (0, 255, 0), 2, cv2.LINE_4)
         cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
 
-    return predictions
 
+# frame = cv2.imread('vio.jpg')
 
-frame = cv2.imread('vio.jpg')
+# predictions = prediction_mask(frame)
 
-predictions = prediction_mask(frame)
+# if predictions > 0:
+#     print('No mask')
+# else:
+#     print('Mask')
 
-if predictions > 0:
-    print('No mask')
-else:
-    print('Mask')
+# cv2.imshow('', frame)
 
-cv2.imshow('', frame)
-
-cv2.waitKey(0)
+# cv2.waitKey(0)
