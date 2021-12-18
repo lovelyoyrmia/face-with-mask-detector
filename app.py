@@ -40,12 +40,11 @@ def process_video():
 
     while run_video:
         _, frame = cam.read()
-        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        frame = detector(frame)
         frame_window.image(frame)
-        detector(frame)
 
     else:
-        st.warning('Stopped Video')
+        st.warning('Run video to detect whether it\'s using mask or not')
 # Main App
 
 
