@@ -1,4 +1,5 @@
 import cv2
+import numpy as np
 import streamlit as st
 from PIL import Image
 from helper_model import detector
@@ -15,6 +16,10 @@ def preprocessing_main():
         process_video()
 
 
+def set_image(image):
+    return st.image(image, use_column_width=True)
+
+
 def process_image():
     image_upload = st.file_uploader(
         'Choose image to predict', ['jpg', 'jpeg', 'png'])
@@ -22,11 +27,16 @@ def process_image():
     if image_upload is not None:
         image = load_image_pil(image_upload)
 
-        st.subheader('Original Image')
-        st.image(image)
-
         if st.sidebar.button('Detect Face Mask'):
-            pass
+            frame = np.array(image.convert('RGB'))
+            image_result = detector(frame)
+            st.sidebar.subheader('Original Image')
+            st.sidebar.image(image, use_column_width=True)
+            st.subheader('Result')
+            set_image(image_result)
+        else:
+            st.subheader('Original Image')
+            set_image(image)
 
     else:
         st.warning(
