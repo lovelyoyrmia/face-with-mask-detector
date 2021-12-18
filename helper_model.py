@@ -27,45 +27,45 @@ def detector(frame):
             for (ex, ey, ew, eh) in faces2:
                 face_roi = roi_color[ey: ey+eh, ex:ex+ew]
 
-        predictions = predict_image(frame, model, face_roi)
+            predictions = predict_image(model, face_roi)
 
-        font = cv2.FONT_HERSHEY_COMPLEX
-        if w < 100:
-            font_scale = 0.45
-            width_rect = 0
-            height_rect = 30
-            font_weight = 1
-        else:
-            font_scale = 1
-            width_rect = 30
-            height_rect = 40
-            font_weight = cv2.LINE_4
+            font = cv2.FONT_HERSHEY_COMPLEX
+            if w < 100:
+                font_scale = 0.45
+                width_rect = 0
+                height_rect = 30
+                font_weight = 1
+            else:
+                font_scale = 1
+                width_rect = 30
+                height_rect = 40
+                font_weight = cv2.LINE_4
 
-        if (predictions > 0):
-            status = 'No Mask!'
+            if (predictions > 0):
+                status = 'No Mask!'
 
-            cv2.rectangle(frame, (x, y), (x+w-width_rect, y-height_rect),
-                          (255, 255, 255), -1)
-            cv2.rectangle(frame, (x, y), (x+w-width_rect, y-height_rect),
-                          (255, 0, 0), 2)
-            cv2.putText(frame, status, (x+8, y-8), font,
-                        font_scale, (255, 0, 0), 2, font_weight)
-            cv2.rectangle(frame, (x, y), (x+w, y+h), (255, 0, 0), 2)
-        else:
-            status = 'Face Mask'
+                cv2.rectangle(frame, (x, y), (x+w-width_rect, y-height_rect),
+                              (255, 255, 255), -1)
+                cv2.rectangle(frame, (x, y), (x+w-width_rect, y-height_rect),
+                              (255, 0, 0), 2)
+                cv2.putText(frame, status, (x+8, y-8), font,
+                            font_scale, (255, 0, 0), 2, font_weight)
+                cv2.rectangle(frame, (x, y), (x+w, y+h), (255, 0, 0), 2)
+            else:
+                status = 'Face Mask'
 
-            cv2.rectangle(frame, (x, y), (x+w-width_rect, y-height_rect),
-                          (255, 255, 255), -1)
-            cv2.rectangle(frame, (x, y), (x+w-width_rect, y-height_rect),
-                          (0, 255, 0), 2)
-            cv2.putText(frame, status, (x+8, y-8), font,
-                        font_scale, (0, 255, 0), 2, font_weight)
-            cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
+                cv2.rectangle(frame, (x, y), (x+w-width_rect, y-height_rect),
+                              (255, 255, 255), -1)
+                cv2.rectangle(frame, (x, y), (x+w-width_rect, y-height_rect),
+                              (0, 255, 0), 2)
+                cv2.putText(frame, status, (x+8, y-8), font,
+                            font_scale, (0, 255, 0), 2, font_weight)
+                cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
 
     return frame
 
 
-def predict_image(frame, model, face_roi):
+def predict_image(model, face_roi):
     final_image = cv2.resize(face_roi, (224, 224))
     final_image = np.expand_dims(final_image, axis=0)
     final_image = final_image/255
