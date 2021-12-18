@@ -12,58 +12,67 @@ def load_mymodel():
 
 def detector(frame):
     model, model_hrc = load_mymodel()
+    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     faceCascade = cv2.CascadeClassifier(model_hrc)
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     faces = faceCascade.detectMultiScale(gray, 1.1, 6)
     for x, y, w, h in faces:
-        roi_gray = gray[y:y+h, x:x+w]
-        roi_color = frame[y:y+h, x:x+w]
+        # roi_gray = gray[y:y+h, x:x+w]
+        # roi_color = frame[y:y+h, x:x+w]
         cv2.rectangle(frame, (x, y), (x+w, y+h), (255, 255, 255), 2)
-        faces2 = faceCascade.detectMultiScale(roi_gray, 1.1, 6)
-        if len(faces2) == 0:
-            print('Face not detected')
+        # faces2 = faceCascade.detectMultiScale(roi_gray, 1.1, 6)
+        # if len(faces2) == 0:
+        #     print('Face not detected')
+        # else:
+        #     for (ex, ey, ew, eh) in faces2:
+        #         face_roi = roi_color[ey: ey+eh, ex:ex+ew]
+
+        predictions = predict_image(frame, model)
+
+        font = cv2.FONT_HERSHEY_COMPLEX
+        font_scale = 1
+
+        if (predictions > 0):
+            status = 'No Mask!'
+
+            cv2.rectangle(frame, (x, y), (x+w-30, y-40),
+                          (255, 255, 255), -1)
+            cv2.rectangle(frame, (x, y), (x+w-30, y-40),
+                          (255, 0, 0), 2)
+            cv2.putText(frame, status, (x+8, y-8), font,
+                        font_scale, (255, 0, 0), 2, cv2.LINE_4)
+            cv2.rectangle(frame, (x, y), (x+w, y+h), (255, 0, 0), 2)
         else:
-            for (ex, ey, ew, eh) in faces2:
-                face_roi = roi_color[ey: ey+eh, ex:ex+ew]
+            status = 'Face Mask'
 
-                print(face_roi)
+            cv2.rectangle(frame, (x, y), (x+w-50, y-40),
+                          (255, 255, 255), -1)
+            cv2.rectangle(frame, (x, y), (x+w-50, y-40),
+                          (0, 255, 0), 2)
+            cv2.putText(frame, status, (x+8, y-8), font,
+                        font_scale, (0, 255, 0), 2, cv2.LINE_4)
+            cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
 
-    final_image = cv2.resize(face_roi, (224, 224))
+    return frame
+
+
+def predict_image(frame, model):
+    final_image = cv2.resize(frame, (224, 224))
     final_image = np.expand_dims(final_image, axis=0)
     final_image = final_image/255
 
     predictions = model.predict(final_image)
 
-    font = cv2.FONT_HERSHEY_COMPLEX
-    font_scale = 1
+    return predictions
 
-    if (predictions > 0):
-        status = 'No Mask!'
+# cap = cv2.VideoCapture(0)
 
-        cv2.rectangle(frame, (x, y), (x+w-30, y-40), (255, 255, 255), -1)
-        cv2.rectangle(frame, (x, y), (x+w-30, y-40), (0, 0, 255), 2)
-        cv2.putText(frame, status, (x+8, y-8), font,
-                    font_scale, (0, 0, 255), 2, cv2.LINE_4)
-        cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 0, 255), 2)
-    else:
-        status = 'Face Mask'
+# while True:
+#     _, frame = cap.read()
 
-        cv2.rectangle(frame, (x, y), (x+w-50, y-40), (255, 255, 255), -1)
-        cv2.rectangle(frame, (x, y), (x+w-50, y-40), (0, 255, 0), 2)
-        cv2.putText(frame, status, (x+8, y-8), font,
-                    font_scale, (0, 255, 0), 2, cv2.LINE_4)
-        cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
+#     detector(frame)
 
+#     cv2.imshow('', frame)
 
-# frame = cv2.imread('vio.jpg')
-
-# predictions = prediction_mask(frame)
-
-# if predictions > 0:
-#     print('No mask')
-# else:
-#     print('Mask')
-
-# cv2.imshow('', frame)
-
-# cv2.waitKey(0)
+#     if cv2.waitKey(0) & 0xFF == ord('q'):
+#         break
