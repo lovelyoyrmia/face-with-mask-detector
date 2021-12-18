@@ -20,12 +20,12 @@ def detector(frame):
         roi_gray = gray[y:y+h, x:x+w]
         roi_color = frame[y:y+h, x:x+w]
         cv2.rectangle(frame, (x, y), (x+w, y+h), (255, 255, 255), 2)
-        faces2 = faceCascade.detectMultiScale(roi_gray, 1.1, 6)
+        faces2 = faceCascade.detectMultiScale(roi_gray, 1.1, 4)
         if len(faces2) == 0:
             print('Face not detected')
-        else:
-            for (ex, ey, ew, eh) in faces2:
-                face_roi = roi_color[ey: ey+eh, ex:ex+ew]
+        # else:
+        for (ex, ey, ew, eh) in faces2:
+            face_roi = roi_color[ey: ey+eh, ex:ex+ew]
 
             predictions = predict_image(model, face_roi)
 
