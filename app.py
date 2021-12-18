@@ -110,7 +110,7 @@ def main():
         .css-r698ls {display: none;}
     </style>
     """
-    # st.markdown(hide_menu_style, unsafe_allow_html=True)
+    st.markdown(hide_menu_style, unsafe_allow_html=True)
     st.title('Face Mask Detection')
     st.text('Detect Mask using computer vision and deep learning algorithm')
 
