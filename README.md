@@ -8,3 +8,8 @@ You can use dataset below.
 [Face without mask](https://drive.google.com/uc?id=1gjltyD_MnNWcnd56NnjUOizdi39CUEPF)
 
 [Face with mask](https://drive.google.com/uc?id=17-FCstm8Fz3bDzFgTmOWHa_c39lTR_1P)
+
+Also source code to build the model of face mask detection.
+
+[Source Code on Google Colab](https://github.com/lovelyoyrmia/machine-learning-notebook/blob/main/face_mask_detection_v2.ipynb)
+
