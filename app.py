@@ -21,27 +21,29 @@ def set_image(image):
 
 
 def process_image():
-    image_upload = st.file_uploader(
-        'Choose image to predict', ['jpg', 'jpeg', 'png'])
+    try:
+        image_upload = st.file_uploader(
+            'Choose image to predict', ['jpg', 'jpeg', 'png'])
 
-    if image_upload is not None:
-        image = load_image_pil(image_upload)
+        if image_upload is not None:
+            image = load_image_pil(image_upload)
 
-        if st.sidebar.button('Detect Face Mask'):
-            frame = np.array(image.convert('RGB'))
-            frame = cv2.cvtColor(frame, 1)
-            image_result = detector(frame)
-            st.sidebar.subheader('Original Image')
-            st.sidebar.image(image, use_column_width=True)
-            st.subheader('Result')
-            set_image(image_result)
+            if st.sidebar.button('Detect Face Mask'):
+                frame = np.array(image.convert('RGB'))
+                image_result = detector(frame)
+                st.sidebar.subheader('Original Image')
+                st.sidebar.image(image, use_column_width=True)
+                st.subheader('Result')
+                set_image(image_result)
+            else:
+                st.subheader('Original Image')
+                set_image(image)
+
         else:
-            st.subheader('Original Image')
-            set_image(image)
-
-    else:
-        st.info(
-            'Upload your image to detect whether it\'s using mask or not')
+            st.info(
+                'Upload your image to detect whether it\'s using mask or not')
+    except Exception:
+        st.error('Can\'t load the image')
 
 
 def process_video():
@@ -50,10 +52,12 @@ def process_video():
     cam = cv2.VideoCapture(0)
 
     while run_video:
-        _, frame = cam.read()
-        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        frame = detector(frame)
-        frame_window.image(frame)
+        try:
+            _, frame = cam.read()
+            frame = detector(frame)
+            frame_window.image(frame)
+        except Exception:
+            st.error('Cannot load the video')
 
     else:
         st.info('Run video to detect whether it\'s using mask or not')
