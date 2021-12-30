@@ -13,6 +13,7 @@ def load_mymodel():
 def detector(frame):
     model, model_hrc = load_mymodel()
     faceCascade = cv2.CascadeClassifier(model_hrc)
+    frame = cv2.cvtColor(frame, 1)
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     faces = faceCascade.detectMultiScale(gray, 1.1, 6)
     for x, y, w, h in faces:
