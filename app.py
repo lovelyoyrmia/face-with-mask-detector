@@ -51,16 +51,18 @@ def process_video():
     frame_window = st.image([])
     cam = cv2.VideoCapture(0)
 
-    while run_video:
-        try:
+    try:
+        while run_video:
             _, frame = cam.read()
             frame = detector(frame)
             frame_window.image(frame)
-        except Exception:
+
             st.error('Cannot load the video')
 
-    else:
-        st.info('Run video to detect whether it\'s using mask or not')
+        else:
+            st.info('Run video to detect whether it\'s using mask or not')
+    except Exception:
+        st.error('Cannot load the video')
 # Main App
 
 
