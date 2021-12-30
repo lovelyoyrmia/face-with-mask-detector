@@ -29,6 +29,7 @@ def process_image():
 
         if st.sidebar.button('Detect Face Mask'):
             frame = np.array(image.convert('RGB'))
+            frame = cv2.cvtColor(frame, 1)
             image_result = detector(frame)
             st.sidebar.subheader('Original Image')
             st.sidebar.image(image, use_column_width=True)
@@ -50,6 +51,7 @@ def process_video():
 
     while run_video:
         _, frame = cam.read()
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         frame = detector(frame)
         frame_window.image(frame)
 
