@@ -13,3 +13,10 @@ Also source code to build the model of face mask detection.
 
 [Source Code on Google Colab](https://github.com/lovelyoyrmia/machine-learning-notebook/blob/main/face_mask_detection_v2.ipynb)
 
+## Examples
+
+### Image with mask on
+<img src="assets/maskon.gif" alt="maskon" />
+
+### Image without mask
+<img src="assets/nomask.gif" alt="nomask" />
